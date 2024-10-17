@@ -41,7 +41,7 @@ DerpyJSON is designed to handle a variety of common issues that arise in JSON st
 
 LLMs often return JSON-like responses with additional text:
 
-```json
+```
 "Sure, here's the json you requested:
 ```json
 {
@@ -60,7 +60,7 @@ In this case, DerpyJSON will:
 
 Comments are not allowed in JSON, but they often appear in loosely formatted JSON-like data:
 
-```json
+```
 {
   "key1": "value1", // Inline comment
   # Another type of comment
@@ -78,7 +78,7 @@ DerpyJSON will:
 
 Sometimes, JSON strings have unbalanced brackets, especially if generated programmatically:
 
-```json
+```
 {
   "key": "value",
   "list": [1, 2, 3
@@ -87,7 +87,7 @@ Sometimes, JSON strings have unbalanced brackets, especially if generated progra
 DerpyJSON will:
 - Balance the brackets by adding the missing `]` and `}`.
 - The resulting JSON will be:
-  ```json
+  ```
   {
     "key": "value",
     "list": [1, 2, 3]
@@ -98,7 +98,7 @@ DerpyJSON will:
 
 Keys in JSON must be quoted, but they are often left unquoted in malformed data:
 
-```json
+```
 {
   unquotedKey: "value",
   anotherKey: 123,
@@ -158,11 +158,6 @@ DerpyJSON is particularly useful when working with JSON that may have been gener
 
 - **stringify(obj: any, space?: any): string**
   - Converts a JavaScript object to a JSON string, with optional pretty-print spacing.
-
-## Limitations
-
-- **Partial Fixes**: `underp` attempts to fix common issues but cannot guarantee correctness for all malformed inputs.
-- **Heuristics-based**: The cleanup process uses heuristics, which might not be suitable for all use cases. Always validate the cleaned JSON when possible.
 
 ## Contributing
 

@@ -11,11 +11,17 @@
     "build": "tsc",
     "prepublishOnly": "npm run build"
   },
-  "keywords": ["json", "parser", "relaxed", "typescript", "derpy"],
+  "keywords": [
+    "json",
+    "parser",
+    "relaxed",
+    "typescript",
+    "derpy"
+  ],
   "author": "Stefan Ginev",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/choephix/derpy-json.git"
+    "url": "git+https://github.com/choephix/derpy-json.git"
   }
 }
