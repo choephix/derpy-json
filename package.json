@@ -1,0 +1,21 @@
+{
+  "name": "derpy-json",
+  "version": "1.0.0",
+  "description": "A relaxed JSON parser for TypeScript that handles various non-standard JSON formats",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": ["json", "parser", "relaxed", "typescript", "derpy"],
+  "author": "Stefan Ginev",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/choephix/derpy-json.git"
+  }
+}
