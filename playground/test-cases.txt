@@ -1,0 +1,67 @@
+#TITLE Basic unquoted keys and comments
+#EXPECT { "foo": "bar", "baz": [1, 2, 3], "qux": "quux" }
+{
+  foo: "bar", // comment
+  baz: [1, 2, 3,],
+  qux: /* multi-line comment */ "quux"
+}
+
+---
+
+#TITLE LLM response with surrounding text
+#EXPECT { "unquotedKey": "value", "anotherKey": "value with trailing comma" }
+Here's the JSON you requested:
+{
+  unquotedKey: "value",
+  "anotherKey": "value with trailing comma",
+}
+Hope this helps!
+
+---
+
+#TITLE Unbalanced brackets
+#EXPECT { "key": "value", "list": [1, 2, 3] }
+{
+  "key": "value",
+  "list": [1, 2, 3
+    
+---
+
+#TITLE Mixed comments
+#EXPECT { "key1": "value1", "key2": "value2", "key3": "value3" }
+{
+  "key1": "value1", // Inline comment
+  # Another type of comment
+  "key2": "value2",
+  /* Multi-line 
+     comment */
+  "key3": "value3",
+}
+
+---
+
+#TITLE Missing quotes around keys
+#EXPECT { "unquotedKey": "value", "anotherKey": 123, "nested": { "deepKey": true } }
+{
+  unquotedKey: "value",
+  anotherKey: 123,
+  nested: {
+    deepKey: true
+  }
+}
+
+---
+
+#TITLE Trailing commas everywhere
+#EXPECT { "a": 1, "b": { "c": 2 }, "d": [1, 2, 3] }
+{
+  a: 1,
+  b: {
+    c: 2,
+  },
+  d: [
+    1,
+    2,
+    3,
+  ],
+} 
