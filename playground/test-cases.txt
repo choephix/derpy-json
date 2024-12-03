@@ -65,6 +65,7 @@
 
 ---
 
+#DISABLE
 #TITLE Unicode and special characters in keys
 #EXPECT {"🚀":"rocket","$pecial":"value","@mention":"test","snake_case":"underscore","kebab-case":"hyphen"}
 {

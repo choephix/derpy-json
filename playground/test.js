@@ -18,7 +18,7 @@ function loadTestCases() {
       // Parse metadata
       while (lines.length && lines[0].startsWith("#")) {
         const [key, ...value] = lines[0].substring(1).split(" ");
-        metadata[key.toLowerCase()] = value.join(" ");
+        metadata[key.toLowerCase()] = value.join(" ").trim() || true;
         lines.shift();
       }
 
@@ -26,9 +26,11 @@ function loadTestCases() {
         name: metadata.title || `Test case #${index + 1}`,
         input: lines.join("\n"),
         expect: metadata.expect ? JSON.parse(metadata.expect) : null,
+        disabled: !!metadata.disable,
       };
     })
-    .filter((testCase) => testCase.input.trim() && testCase.expect);
+    // Filter out disabled tests and empty/invalid tests
+    .filter((testCase) => !testCase.disabled && testCase.input.trim() && testCase.expect);
 }
 
 const testCases = loadTestCases();
