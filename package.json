@@ -1,6 +1,6 @@
 {
   "name": "derpy-json",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A relaxed JSON parser for TypeScript that handles various non-standard JSON formats",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
