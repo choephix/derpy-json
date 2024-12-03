@@ -122,10 +122,10 @@ function wrapJSONKeys(str: string): string {
 
 function removeTrailingCommas(jsonString: string): string {
   // Remove trailing commas from objects
-  jsonString = jsonString.replace(/,\s*}/g, "}");
+  jsonString = jsonString.replace(/,+\s*}/g, "}");
 
   // Remove trailing commas from arrays
-  jsonString = jsonString.replace(/,\s*\]/g, "]");
+  jsonString = jsonString.replace(/,+\s*\]/g, "]");
 
   // Remove trailing commas after property values, but not after property names
   jsonString = jsonString.replace(/,(\s*[\]}])/g, "$1");
