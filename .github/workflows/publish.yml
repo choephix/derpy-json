@@ -1,0 +1,41 @@
+name: Publish to NPM
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+      - '.npmignore'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          registry-url: 'https://registry.npmjs.org'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build
+        run: npm run build
+        
+      - name: Check version and publish
+        run: |
+          LATEST_VERSION=$(npm view derpy-json version)
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          if [ "$LATEST_VERSION" != "$CURRENT_VERSION" ]; then
+            npm publish
+            echo " Published version $CURRENT_VERSION"
+          else
+            echo "Version $CURRENT_VERSION already published, skipping"
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }} 
