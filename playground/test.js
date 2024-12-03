@@ -32,32 +32,50 @@ function loadTestCases() {
 }
 
 const testCases = loadTestCases();
-let failures = 0;
+let failures = [];
+let results = [];
 
 testCases.forEach(({ name, input, expect }) => {
-  console.log(`\n🔍 Testing: ${name}`);
-
   try {
     const parsed = DerpyJSON.parse(input);
     const isEqual = JSON.stringify(parsed) === JSON.stringify(expect);
 
     if (!isEqual) {
-      console.log(`❌ Test failed`);
-      console.log("🎯 Expected:", JSON.stringify(expect, null, 2));
-      console.log("📄 Got:", JSON.stringify(parsed, null, 2));
-      failures++;
+      results.push(`❌ ${name}`);
+      failures.push({
+        name,
+        expected: expect,
+        received: parsed
+      });
     } else {
-      console.log("✅ Test passed");
+      results.push(`✅ ${name}`);
     }
   } catch (error) {
-    console.log(`❌ Test failed with error: ${error.message}`);
-    failures++;
+    results.push(`❌ ${name}`);
+    failures.push({
+      name,
+      error: error.message
+    });
   }
 });
 
-if (failures === 0) {
-  console.log("\n🎉 All tests passed!");
-} else {
-  console.log(`\n❌ ${failures} test${failures === 1 ? "" : "s"} failed`);
+// Print summary first
+console.log("\n📊 Test Results Summary:");
+results.forEach(result => console.log(result));
+
+// Then print detailed failures if any
+if (failures.length > 0) {
+  console.log("\n🔍 Failure Details:");
+  failures.forEach(failure => {
+    console.log(`\n📌 ${failure.name}`);
+    if (failure.error) {
+      console.log(`💥 Error: ${failure.error}`);
+    } else {
+      console.log("🎯 Expected:", JSON.stringify(failure.expected, null, 2));
+      console.log("📄 Got:", JSON.stringify(failure.received, null, 2));
+    }
+  });
   process.exit(1);
+} else {
+  console.log("\n🎉 All tests passed!");
 }
