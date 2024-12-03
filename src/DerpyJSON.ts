@@ -167,13 +167,10 @@ function balanceBrackets(str: string): string {
 
 function wrapJSONKeys(str: string): string {
   // Handle unquoted keys including Unicode and special characters
-  str = str.replace(
-    /(?<=^|\s|,|\{)([$\w\u0080-\uffff@\-]+)(?=\s*:)/g,
-    '"$1"'
-  );
+  str = str.replace(/(^|\s|,|\{)([$\w\u0080-\uffff@\-]+)(\s*:)/g, '$1"$2"$3');
   
   // Handle single-quoted keys
-  str = str.replace(/(?<=^|\s|,|\{)'([^']+)'(?=\s*:)/g, '"$1"');
+  str = str.replace(/(^|\s|,|\{)'([^']+)'(\s*:)/g, '$1"$2"$3');
   
   return str;
 }

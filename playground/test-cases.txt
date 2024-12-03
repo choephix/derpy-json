@@ -207,3 +207,403 @@ And some more text here
   number: 42e10e,
   text: string value without quotes
 }
+
+---
+
+#TITLE Normal JSON
+#EXPECT { "name": "John Doe", "age": 30, "occupation": "Software Engineer" }
+{
+  "name": "John Doe",
+  "age": 30,
+  "occupation": "Software Engineer"
+}
+
+---
+
+#TITLE Basic unquoted keys and comments
+#EXPECT { "foo": "bar", "baz": [1, 2, 3], "qux": "quux" }
+{
+  foo: "bar", // comment
+  baz: [1, 2, 3,],
+  qux: /* multi-line comment */ "quux"
+}
+
+---
+
+#TITLE LLM response with surrounding text
+#EXPECT { "unquotedKey": "value", "anotherKey": "value with trailing comma" }
+Here's the JSON you requested:
+{
+  unquotedKey: "value",
+  "anotherKey": "value with trailing comma",
+}
+Hope this helps!
+
+---
+
+#TITLE Unbalanced brackets
+#EXPECT { "key": "value", "list": [1, 2, 3] }
+{
+  "key": "value",
+  "list": [1, 2, 3
+    
+---
+
+#TITLE Mixed comments
+#EXPECT { "key1": "value1", "key2": "value2", "key3": "value3" }
+{
+  "key1": "value1", // Inline comment
+  # Another type of comment
+  "key2": "value2",
+  /* Multi-line 
+     comment */
+  "key3": "value3",
+}
+
+---
+
+#TITLE Missing quotes around keys
+#EXPECT { "unquotedKey": "value", "anotherKey": 123, "nested": { "deepKey": true } }
+{
+  unquotedKey: "value",
+  anotherKey: 123,
+  nested: {
+    deepKey: true
+  }
+}
+
+---
+
+#TITLE Trailing commas everywhere
+#EXPECT { "a": 1, "b": { "c": 2 }, "d": [1, 2, 3] }
+{
+  a: 1,
+  b: {
+    c: 2,
+  },
+  d: [
+    1,
+    2,
+    3,
+  ],
+}
+
+---
+#TITLE Single quotes instead of double quotes
+#EXPECT { "name": "John Doe", "age": 30 }
+{
+  'name': 'John Doe',
+  'age': 30
+}
+
+---
+#TITLE Missing colon
+#EXPECT { "name": "John Doe", "age": 30 }
+{
+  "name" "John Doe",
+  "age": 30
+}
+
+---
+#TITLE Extra comma in object
+#EXPECT { "name": "John Doe", "age": 30 }
+{
+  "name": "John Doe",,
+  "age": 30
+}
+
+---
+#TITLE Unclosed array
+#EXPECT { "myArray": [1, 2, 3] }
+{
+  "myArray": [1, 2, 3
+}
+
+---
+#TITLE Unclosed object
+#EXPECT { "name": "John Doe", "age": 30 }
+{
+  "name": "John Doe",
+  "age": 30
+
+---
+#TITLE Unescaped characters in string
+#EXPECT { "message": "Hello, \"world\"!" }
+{
+  "message": "Hello, "world"!" 
+}
+
+---
+#TITLE Incorrect number type
+#EXPECT { "value": 1234 }
+{
+  "value": 1234.5.6
+}
+
+---
+#TITLE Boolean with incorrect capitalization
+#EXPECT { "flag": true }
+{
+  "flag": True
+}
+
+---
+#TITLE Null with incorrect capitalization
+#EXPECT { "value": null }
+{
+  "value": Null
+}
+
+---
+#TITLE Empty input
+#EXPECT {}
+ 
+
+---
+#TITLE Whitespace only input
+#EXPECT {}
+    
+
+---
+#TITLE Deeply nested and messy
+#EXPECT { "a": 1, "b": { "c": 2, "d": [3, 4, { "e": 5 }] }, "f": 6 }
+{
+  a: 1, 
+  b : {
+    c: 2, // Some comment
+    d: [
+      3, 
+      4,
+      { 
+        e : 5
+      } 
+    ]
+  }
+  f : 6
+}
+
+---
+#TITLE Multiple JSON objects in one string
+#EXPECT { "first": "object" }
+{ "first": "object" } { "second": "object" }
+
+---
+#TITLE JSON with a typo inside a string
+#EXPECT { "message": "This has a typo." }
+{ "message": "This has a tpyo." }
+
+---
+#TITLE JSON with comments and missing commas
+#EXPECT { "a": 1, "b": 2, "c": 3 }
+{
+  a: 1 // Comment
+  b: 2  /* Another comment */
+  c: 3
+}
+
+---
+#TITLE JSON with a single quote inside a double-quoted string
+#EXPECT { "message": "It's a nice day" }
+{
+  "message": "It's a nice day"
+}
+
+---
+
+#TITLE Normal JSON
+#EXPECT { "name": "John Doe", "age": 30, "occupation": "Software Engineer" }
+{
+  "name": "John Doe",
+  "age": 30,
+  "occupation": "Software Engineer"
+}
+
+---
+
+#TITLE Basic unquoted keys and comments
+#EXPECT { "foo": "bar", "baz": [1, 2, 3], "qux": "quux" }
+{
+  foo: "bar", // comment
+  baz: [1, 2, 3,],
+  qux: /* multi-line comment */ "quux"
+}
+
+---
+
+#TITLE LLM response with surrounding text
+#EXPECT { "unquotedKey": "value", "anotherKey": "value with trailing comma" }
+Here's the JSON you requested:
+{
+  unquotedKey: "value",
+  "anotherKey": "value with trailing comma",
+}
+Hope this helps!
+
+---
+
+#TITLE Unbalanced brackets
+#EXPECT { "key": "value", "list": [1, 2, 3] }
+{
+  "key": "value",
+  "list": [1, 2, 3
+    
+---
+
+#TITLE Mixed comments
+#EXPECT { "key1": "value1", "key2": "value2", "key3": "value3" }
+{
+  "key1": "value1", // Inline comment
+  # Another type of comment
+  "key2": "value2",
+  /* Multi-line 
+     comment */
+  "key3": "value3",
+}
+
+---
+
+#TITLE Missing quotes around keys
+#EXPECT { "unquotedKey": "value", "anotherKey": 123, "nested": { "deepKey": true } }
+{
+  unquotedKey: "value",
+  anotherKey: 123,
+  nested: {
+    deepKey: true
+  }
+}
+
+---
+
+#TITLE Trailing commas everywhere
+#EXPECT { "a": 1, "b": { "c": 2 }, "d": [1, 2, 3] }
+{
+  a: 1,
+  b: {
+    c: 2,
+  },
+  d: [
+    1,
+    2,
+    3,
+  ],
+}
+
+---
+#TITLE Single quotes instead of double quotes
+#EXPECT { "name": "John Doe", "age": 30 }
+{
+  'name': 'John Doe',
+  'age': 30
+}
+
+---
+#TITLE Missing colon
+#EXPECT { "name": "John Doe", "age": 30 }
+{
+  "name" "John Doe",
+  "age": 30
+}
+
+---
+#TITLE Extra comma in object
+#EXPECT { "name": "John Doe", "age": 30 }
+{
+  "name": "John Doe",,
+  "age": 30
+}
+
+---
+#TITLE Unclosed array
+#EXPECT { "myArray": [1, 2, 3] }
+{
+  "myArray": [1, 2, 3
+}
+
+---
+#TITLE Unclosed object
+#EXPECT { "name": "John Doe", "age": 30 }
+{
+  "name": "John Doe",
+  "age": 30
+
+---
+#TITLE Unescaped characters in string
+#EXPECT { "message": "Hello, \"world\"!" }
+{
+  "message": "Hello, "world"!" 
+}
+
+---
+#TITLE Incorrect number type
+#EXPECT { "value": 1234 }
+{
+  "value": 1234.5.6
+}
+
+---
+#TITLE Boolean with incorrect capitalization
+#EXPECT { "flag": true }
+{
+  "flag": True
+}
+
+---
+#TITLE Null with incorrect capitalization
+#EXPECT { "value": null }
+{
+  "value": Null
+}
+
+---
+#TITLE Empty input
+#EXPECT {}
+ 
+
+---
+#TITLE Whitespace only input
+#EXPECT {}
+    
+
+---
+#TITLE Deeply nested and messy
+#EXPECT { "a": 1, "b": { "c": 2, "d": [3, 4, { "e": 5 }] }, "f": 6 }
+{
+  a: 1, 
+  b : {
+    c: 2, // Some comment
+    d: [
+      3, 
+      4,
+      { 
+        e : 5
+      } 
+    ]
+  }
+  f : 6
+}
+
+---
+#TITLE Multiple JSON objects in one string
+#EXPECT { "first": "object" }
+{ "first": "object" } { "second": "object" }
+
+---
+#TITLE JSON with a typo inside a string
+#EXPECT { "message": "This has a typo." }
+{ "message": "This has a tpyo." }
+
+---
+#TITLE JSON with comments and missing commas
+#EXPECT { "a": 1, "b": 2, "c": 3 }
+{
+  a: 1 // Comment
+  b: 2  /* Another comment */
+  c: 3
+}
+
+---
+#TITLE JSON with a single quote inside a double-quoted string
+#EXPECT { "message": "It's a nice day" }
+{
+  "message": "It's a nice day"
+}
