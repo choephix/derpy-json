@@ -51,13 +51,69 @@ function extractFirstJsonSegment(str: string): string | null {
 }
 
 function removeComments(str: string): string {
-  // Remove // comments
-  str = str.replace(/\/\/.*$/gm, "");
-  // Remove # comments
-  str = str.replace(/#.*$/gm, "");
-  // Remove /* */ comments
-  str = str.replace(/\/\*[\s\S]*?\*\//g, "");
-  return str;
+  let inString = false;
+  let quoteChar = '';
+  let inComment = false;
+  let commentType = '';
+  let result = '';
+  
+  for (let i = 0; i < str.length; i++) {
+    const char = str[i];
+    const nextChar = str[i + 1];
+
+    // Handle string boundaries
+    if ((char === '"' || char === "'") && !inComment) {
+      if (!inString) {
+        inString = true;
+        quoteChar = char;
+      } else if (char === quoteChar) {
+        inString = false;
+      }
+    }
+
+    // Handle comment start
+    if (!inString && !inComment) {
+      if (char === '/' && nextChar === '/') {
+        inComment = true;
+        commentType = '//';
+        i++; // Skip next character
+        continue;
+      } else if (char === '/' && nextChar === '*') {
+        inComment = true;
+        commentType = '/*';
+        i++; // Skip next character
+        continue;
+      } else if (char === '#') {
+        inComment = true;
+        commentType = '#';
+        continue;
+      }
+    }
+
+    // Handle comment end
+    if (inComment) {
+      if (commentType === '//' && char === '\n') {
+        inComment = false;
+      } else if (commentType === '/*' && char === '*' && nextChar === '/') {
+        inComment = false;
+        i++; // Skip next character
+        continue;
+      } else if (commentType === '#' && char === '\n') {
+        inComment = false;
+      }
+      
+      if (inComment) {
+        continue;
+      }
+    }
+
+    // Add character to result if not in comment
+    if (!inComment) {
+      result += char;
+    }
+  }
+
+  return result;
 }
 
 function balanceBrackets(str: string): string {
@@ -110,10 +166,13 @@ function balanceBrackets(str: string): string {
 }
 
 function wrapJSONKeys(str: string): string {
-  // First handle unquoted keys
-  str = str.replace(/(?<=^|\s|,|\{)([a-zA-Z0-9_-]+)(?=\s*:)/g, '"$1"');
+  // Handle unquoted keys including Unicode and special characters
+  str = str.replace(
+    /(?<=^|\s|,|\{)([$\w\u0080-\uffff@\-]+)(?=\s*:)/g,
+    '"$1"'
+  );
   
-  // Then handle single-quoted keys
+  // Handle single-quoted keys
   str = str.replace(/(?<=^|\s|,|\{)'([^']+)'(?=\s*:)/g, '"$1"');
   
   return str;
