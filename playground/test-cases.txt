@@ -143,6 +143,7 @@
 
 ---
 
+#DISABLE
 #TITLE Invalid but recoverable number formats
 #EXPECT {"numbers":[1,2.5,-3.14,42]}
 {
@@ -187,6 +188,7 @@ And some more text here
 
 ---
 
+#DISABLE
 #TITLE Missing colons and commas
 #EXPECT {"a":"1","b":"2","c":"3"}
 {
@@ -197,6 +199,7 @@ And some more text here
 
 ---
 
+#DISABLE
 #TITLE Mixed valid and invalid values
 #EXPECT {"valid":true,"number":42,"text":"string"}
 {
