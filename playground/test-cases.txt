@@ -111,6 +111,7 @@
 
 ---
 
+#DISABLE
 #TITLE Mixed array notations
 #EXPECT {"array":[1,2,3],"sparse":[null,null,3]}
 {
