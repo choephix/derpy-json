@@ -1,9 +1,10 @@
 export namespace DerpyJSON {
   export function underp(str: string | null): any {
     if (str === null) return null;
+    
     str = extractFirstJsonSegment(str);
-
     if (str === null) return null;
+
     str = removeComments(str);
 
     str = wrapJSONKeys(str);
@@ -131,6 +132,3 @@ function removeTrailingCommas(jsonString: string): string {
 
   return jsonString;
 }
-
-// Additional helper methods could go here if needed
-// e.g. methods to handle edge cases or further clean the input string
