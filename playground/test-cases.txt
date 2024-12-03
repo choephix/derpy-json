@@ -1,67 +1,204 @@
-#TITLE Basic unquoted keys and comments
-#EXPECT { "foo": "bar", "baz": [1, 2, 3], "qux": "quux" }
+#TITLE Valid JSON baseline
+#EXPECT {"name":"John","age":30,"address":{"street":"123 Main St","city":"Boston"},"hobbies":["reading","gaming"]}
 {
-  foo: "bar", // comment
-  baz: [1, 2, 3,],
-  qux: /* multi-line comment */ "quux"
-}
-
----
-
-#TITLE LLM response with surrounding text
-#EXPECT { "unquotedKey": "value", "anotherKey": "value with trailing comma" }
-Here's the JSON you requested:
-{
-  unquotedKey: "value",
-  "anotherKey": "value with trailing comma",
-}
-Hope this helps!
-
----
-
-#TITLE Unbalanced brackets
-#EXPECT { "key": "value", "list": [1, 2, 3] }
-{
-  "key": "value",
-  "list": [1, 2, 3
-    
----
-
-#TITLE Mixed comments
-#EXPECT { "key1": "value1", "key2": "value2", "key3": "value3" }
-{
-  "key1": "value1", // Inline comment
-  # Another type of comment
-  "key2": "value2",
-  /* Multi-line 
-     comment */
-  "key3": "value3",
-}
-
----
-
-#TITLE Missing quotes around keys
-#EXPECT { "unquotedKey": "value", "anotherKey": 123, "nested": { "deepKey": true } }
-{
-  unquotedKey: "value",
-  anotherKey: 123,
-  nested: {
-    deepKey: true
-  }
-}
-
----
-
-#TITLE Trailing commas everywhere
-#EXPECT { "a": 1, "b": { "c": 2 }, "d": [1, 2, 3] }
-{
-  a: 1,
-  b: {
-    c: 2,
+  "name": "John",
+  "age": 30,
+  "address": {
+    "street": "123 Main St",
+    "city": "Boston"
   },
-  d: [
-    1,
-    2,
-    3,
-  ],
-} 
+  "hobbies": ["reading", "gaming"]
+}
+
+---
+
+#TITLE Multiple trailing commas everywhere
+#EXPECT {"a":1,"b":[1,2,3],"c":{"d":4}}
+{
+  a: 1,,,,
+  b: [1,2,3,,,,],,,
+  c: {
+    d: 4,,,,
+  },,,
+}
+
+---
+
+#TITLE Missing closing brackets with nested structures
+#EXPECT {"a":{"b":{"c":[1,2,3]}}}
+{
+  a: {
+    b: {
+      c: [1,2,3
+
+---
+
+#TITLE Mixed quote styles and no quotes
+#EXPECT {"single_quoted":"value","double_quoted":"another","no_quotes":"test","mixed":"quotes"}
+{
+  single_quoted: 'value',
+  "double_quoted": "another",
+  no_quotes: test,
+  'mixed': "quotes"
+}
+
+---
+
+#TITLE Random whitespace and newlines
+#EXPECT {"key":"value","array":[1,2,3]}
+{key:    
+         "value",
+  array     :     [    1,
+    
+    2,     3   ]}
+
+---
+
+#TITLE Comments in impossible places
+#EXPECT {"key":"val//ue","nested":{"deep":"//comment"},"array":[1,"//",2]}
+{
+  key: "val//ue", // comment in value
+  nested: {/* comment inside */ "deep": "//comment"},
+  array: [1, // comment in array
+          "//", 2]
+}
+
+---
+
+#TITLE Unicode and special characters in keys
+#EXPECT {"🚀":"rocket","$pecial":"value","@mention":"test","snake_case":"underscore","kebab-case":"hyphen"}
+{
+  🚀: "rocket",
+  $pecial: "value",
+  @mention: "test",
+  snake_case: "underscore",
+  kebab-case: "hyphen"
+}
+
+---
+
+#TITLE Nested arrays with mixed content
+#EXPECT {"data":[[1,2,[3,4,["nested"],5],6],{"mix":"types"},[null,true,false]]}
+{
+  data: [
+    [1,2,[3,4,["nested"],5],6],
+    {mix: "types"},
+    [null,true,false]
+  ]
+}
+
+---
+
+#TITLE HTML-like content in values
+#EXPECT {"html":"<div>content</div>","script":"<script>alert('test')</script>"}
+{
+  html: "<div>content</div>",
+  script: "<script>alert('test')</script>"
+}
+
+---
+
+#TITLE Extremely deep nesting
+#EXPECT {"level1":{"level2":{"level3":{"level4":{"level5":{"level6":{"value":42}}}}}}}
+{
+  level1: {
+    level2: {
+      level3: {
+        level4: {
+          level5: {
+            level6: {value: 42
+
+---
+
+#TITLE Mixed array notations
+#EXPECT {"array":[1,2,3],"sparse":[null,null,3]}
+{
+  array: [1,2,3],
+  sparse: [,,3]
+}
+
+---
+
+#TITLE Escaped characters in strings
+#EXPECT {"escaped":"\"quoted\" and \\backslash\\","newlines":"line1\nline2"}
+{
+  escaped: "\"quoted\" and \\backslash\\",
+  newlines: "line1\nline2"
+}
+
+---
+
+#TITLE Comments with JSON-like content
+#EXPECT {"key":"value"}
+{
+  key: "value" // {"this":"is","a":"comment"}
+  /* {
+    "this": "is",
+    "a": "multi-line",
+    "comment": true
+  } */
+}
+
+---
+
+#TITLE Invalid but recoverable number formats
+#EXPECT {"numbers":[1,2.5,-3.14,42]}
+{
+  numbers: [
+    1.0.0,
+    2.5.0,
+    -3.14.15,
+    42e
+  ]
+}
+
+---
+
+#TITLE Multiple objects in string
+#EXPECT {"first":"value"}
+{
+  "first": "value"
+}
+{
+  "second": "should be ignored"
+}
+
+---
+
+#TITLE Garbage around valid JSON
+#EXPECT {"key":"value"}
+Hello this is some text
+{
+  key: "value"
+}
+And some more text here
+
+---
+
+#TITLE Empty object with comments
+#EXPECT {}
+{
+  // Empty object
+  /* With some
+     comments */
+}
+
+---
+
+#TITLE Missing colons and commas
+#EXPECT {"a":"1","b":"2","c":"3"}
+{
+  a "1"
+  b "2",
+  c: "3"
+}
+
+---
+
+#TITLE Mixed valid and invalid values
+#EXPECT {"valid":true,"number":42,"text":"string"}
+{
+  valid: true,
+  number: 42e10e,
+  text: string value without quotes
+}
