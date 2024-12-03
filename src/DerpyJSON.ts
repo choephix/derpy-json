@@ -132,3 +132,5 @@ function removeTrailingCommas(jsonString: string): string {
 
   return jsonString;
 }
+
+export default DerpyJSON;
