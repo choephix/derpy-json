@@ -8,6 +8,8 @@ export namespace DerpyJSON {
     str = removeComments(str);
 
     str = wrapJSONKeys(str);
+    
+    str = normalizeValues(str);
 
     str = removeTrailingCommas(str);
 
@@ -108,16 +110,23 @@ function balanceBrackets(str: string): string {
 }
 
 function wrapJSONKeys(str: string): string {
-  // Regular expression to match potential JSON keys
-  // This regex looks for:
-  // 1. Word boundary or start of string
-  // 2. A key that can contain letters, numbers, underscores, or hyphens
-  // 3. Followed by a colon
-  // 4. Not already wrapped in quotes
-  const keyRegex = /(?<=^|\s|,|\{)([a-zA-Z0-9_-]+)(?=\s*:)/g;
+  // First handle unquoted keys
+  str = str.replace(/(?<=^|\s|,|\{)([a-zA-Z0-9_-]+)(?=\s*:)/g, '"$1"');
+  
+  // Then handle single-quoted keys
+  str = str.replace(/(?<=^|\s|,|\{)'([^']+)'(?=\s*:)/g, '"$1"');
+  
+  return str;
+}
 
-  // Replace all matches with the same key wrapped in double quotes
-  return str.replace(keyRegex, '"$1"');
+function normalizeValues(str: string): string {
+  // Replace unquoted values (excluding numbers, true, false, null, and nested objects/arrays)
+  str = str.replace(/:\s*([a-zA-Z][a-zA-Z0-9_-]*)(?=\s*[,}])/g, ': "$1"');
+  
+  // Replace single-quoted values with double quotes
+  str = str.replace(/:\s*'([^']*)'(?=\s*[,}])/g, ': "$1"');
+  
+  return str;
 }
 
 function removeTrailingCommas(jsonString: string): string {
