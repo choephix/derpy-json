@@ -43,6 +43,7 @@ testCases.forEach(({ name, input, expect }) => {
     if (!isEqual) {
       results.push(`❌ ${name}`);
       failures.push({
+        input,
         name,
         expected: expect,
         received: parsed
@@ -53,6 +54,7 @@ testCases.forEach(({ name, input, expect }) => {
   } catch (error) {
     results.push(`❌ ${name}`);
     failures.push({
+      input,
       name,
       error: error.message
     });
@@ -71,8 +73,9 @@ if (failures.length > 0) {
     if (failure.error) {
       console.log(`💥 Error: ${failure.error}`);
     } else {
-      console.log("🎯 Expected:", JSON.stringify(failure.expected, null, 2));
-      console.log("📄 Got:", JSON.stringify(failure.received, null, 2));
+      console.log("📄 Input was:\n", failure.input);
+      console.log("🎯 Expected:\n", JSON.stringify(failure.expected, null, 2));
+      console.log("🔴 Got:\n", JSON.stringify(failure.received, null, 2));
     }
   });
   process.exit(1);
