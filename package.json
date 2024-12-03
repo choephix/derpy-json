@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "description": "A relaxed JSON parser for TypeScript that handles various non-standard JSON formats",
   "main": "dist/index.js",
+  "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
@@ -23,5 +24,12 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/choephix/derpy-json.git"
+  },
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.esm.js",
+      "types": "./dist/index.d.ts"
+    }
   }
 }
